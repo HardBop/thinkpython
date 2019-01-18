@@ -1,4 +1,4 @@
-# Python code for ThinkPython Exercise 12.4 
+# Python code for ThinkPython Exercise 12.4
 # This should get pasted into the Chapter12.py file
 
 # Exercise 12.1 : Write a function called sumall that takes any number of arguments
@@ -59,13 +59,13 @@ def let_freq(in_string) :
         print char, freq
 
 
-# Excercise 12.4.1:  Write a program that reads a word list from a file 
+# Excercise 12.4.1:  Write a program that reads a word list from a file
 #   (see Section 9.1) and prints all the sets of words that are anagrams.
 
-""" 
-Create index for all words by taking the words.txt file and sorting the 
-    letters, then matching all the words that have that same "key", which 
-    is the set of sorted letters.  
+"""
+Create index for all words by taking the words.txt file and sorting the
+    letters, then matching all the words that have that same "key", which
+    is the set of sorted letters.
 """
 
 # from Chapter 10 exercises
@@ -84,7 +84,7 @@ def anagram_dict() :
 # put anagrams into a dict
 anagrams = anagram_dict()
 
-# Find entry with greatest len(anagrams[word]) 
+# Find entry with greatest len(anagrams[word])
 def most_ans() :
     n_anograms = 0
     ano_cnt = dict()
@@ -103,17 +103,17 @@ def findmaxano() :
             print item, ano_cnt[item], anagrams[item]
 
 # Max anagrams: two strings have 11 anagrams: aeprs and aelrst
-# All anagrams would result if printing all entries of annograms 
-#    where len(ano_cnt[item]) > 1, which yields 10,157 cases of 
+# All anagrams would result if printing all entries of annograms
+#    where len(ano_cnt[item]) > 1, which yields 10,157 cases of
 #    letter combinations in words.txt that can be formed into anagrams
 
-# Exercise 10.4.2: 2. Modify the previous program so that it prints the 
-#    largest set of anagrams first, followed by the second largest set, 
+# Exercise 10.4.2: 2. Modify the previous program so that it prints the
+#    largest set of anagrams first, followed by the second largest set,
 #    and so on.
 # This is already available via anagrams and ano_cnt dicts
 
-# Exercise 10.4.3: In Scrabble a “bingo” is when you play all seven tiles 
-#    in your rack, along with a letter on the board, to form an eight-letter 
+# Exercise 10.4.3: In Scrabble a “bingo” is when you play all seven tiles
+#    in your rack, along with a letter on the board, to form an eight-letter
 #    word. What set of 8 letters forms the most possible bingos?
 
 
@@ -129,4 +129,4 @@ def bingos() :
                 print item, ano_cnt[item], anagrams[item]
 
 
-
+# Enter code for next Exercise here
