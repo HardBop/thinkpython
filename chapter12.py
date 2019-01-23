@@ -71,7 +71,7 @@ Create index for all words by taking the words.txt file and sorting the
 # from Chapter 10 exercises
 def anagram_dict() :
     anagrams = dict()
-    fin = open('turtle/words.txt')
+    fin = open('words.txt')  # assumes words.txt in current directory
     for line in fin :
         word = line.strip()
         sword = ''.join(sorted(word)) # creates a string of sorted chars
@@ -107,12 +107,12 @@ def findmaxano() :
 #    where len(ano_cnt[item]) > 1, which yields 10,157 cases of
 #    letter combinations in words.txt that can be formed into anagrams
 
-# Exercise 10.4.2: 2. Modify the previous program so that it prints the
+# Exercise 12.4.2: 2. Modify the previous program so that it prints the
 #    largest set of anagrams first, followed by the second largest set,
 #    and so on.
 # This is already available via anagrams and ano_cnt dicts
 
-# Exercise 10.4.3: In Scrabble a “bingo” is when you play all seven tiles
+# Exercise 12.4.3: In Scrabble a “bingo” is when you play all seven tiles
 #    in your rack, along with a letter on the board, to form an eight-letter
 #    word. What set of 8 letters forms the most possible bingos?
 
@@ -129,4 +129,88 @@ def bingos() :
                 print item, ano_cnt[item], anagrams[item]
 
 
-# Enter code for next Exercise here
+# Exercise 12.5  Two words form a “metathesis pair” if you can transform
+#    one into the other by swapping two letters; for example, “converse”
+#    and “conserve.” Write a program that finds all of the metathesis pairs
+#    in the dictionary
+
+""" matathesis pairs are a subset of anagrams - same letters but with a
+    special restricted re-ordering.  Hence search the dict of anagrams
+    for the metathesis pairs.
+    The challenge is the possible combination of pairs for the richer
+    anagrams - a letter sequence with 11 anagrams has C(11,n) possible
+    pairings where n is the word length.
+
+"""
+# First - let's get a frequency count for anagrams that shows how many
+#    letter combinations have n anagrams for each n.  (e.g., n = [1,11])
+
+def ano_freq() :
+    ano_freqs = dict()
+    for item in ano_cnt :
+        if ano_cnt[item] not in ano_freqs :
+            ano_freqs[ano_cnt[item]] = 1
+        else :
+            ano_freqs[ano_cnt[item]] += 1
+    return ano_freqs
+
+def ano_freql() :
+    ano_freql = list()
+    for item in ano_freqs :
+        ano_freql.append([item,ano_freqs[item]])
+    return ano_freql
+
+# To list the frequence from highest to lowest:
+
+# Check count of combos at each frequency
+import math
+def ano_combo() :
+    ano_combo = dict()
+    for cnt in ano_freqs :
+        if cnt > 1 :
+            ano_combo[cnt] = math.factorial(cnt)/(2*math.factorial(cnt-2))
+    return ano_combo
+
+ano_combo = ano_combo()
+
+for cnt in ano_combo :
+    print cnt, ano_combo[cnt]
+
+# Total pairs to check: number of letter combos with n annagrams times
+#   combination of pairs from n annagrams
+#   = sum over idx {ano_freqs[idx] * ano_combo[idx]}
+def totcomps() :
+    tots = 0
+    for idx in ano_combo :
+        tots = tots + ano_freqs[idx] * ano_combo[idx]
+    print tots
+
+# have to check 19,194 pairs that could be metathesis pairings
+
+"""
+Approach: compare the letters of each pair and increment a counter
+for each time the letters are different.  IFF n=2 they are metathesis
+pairs.
+"""
+from itertools import combinations
+
+def letcomp(word1,word2) :
+    diffex = 0
+    for i in range(len(word1)) :
+        if word1[i] != word2[i] :
+            diffex += 1
+    return diffex
+
+def metathesis() :
+    meta = list()
+    for item in ano_cnt :
+        if ano_cnt[item] > 1 :
+            combos = combinations(anagrams[item],2)
+            for tup in combos :
+                diffex = letcomp(tup[0],tup[1])
+                if diffex == 2 :
+                    meta.append(tup)
+    return meta
+
+# Holy Shizzle - it worked!!!
+# Yields 3311 pairs of metathesis pairs from Words.txt
