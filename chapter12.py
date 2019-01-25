@@ -6,7 +6,7 @@
 def sumall(*nums) :
     summer = 0
     for item in nums :
-        summer += item
+    summer += item
     return summer
 
 """ Built in functions
@@ -21,11 +21,11 @@ def sumall(*nums) :
 def sort_by_length(words) :
     t = []
     for word in words :
-        t.append((len(word), word))
+    t.append((len(word), word))
     t.sort(reverse=True)
     res = []
     for length, word in t :
-        res.append(word)
+    res.append(word)
     return res
 
 # modify to randomize order if words have same length (rather than the
@@ -34,11 +34,11 @@ def sort_by_length(words) :
 def sortof_by_length(words) :
     t = []
     for word in words :
-        t.append((len(word), random.random(), word))
+    t.append((len(word), random.random(), word))
     t.sort(reverse=True)
     res = []
     for length, randy, word in t :
-        res.append(word)
+    res.append(word)
     return res
 
 # Exercise 12.3: Write a function called most_frequent that takes a string
@@ -46,17 +46,17 @@ def sortof_by_length(words) :
 def let_freq(in_string) :
     chd = {}
     for char in in_string :
-        if char in chd :
-            chd[char] += 1
-        else :
-            chd[char] = 1
+    if char in chd :
+    chd[char] += 1
+    else :
+    chd[char] = 1
     chlist = chd.items()
     chsort = []
     for char, freq in chlist :
-        chsort.append((freq,char))
+    chsort.append((freq,char))
     chsort.sort(reverse=True)
     for freq,char in chsort :
-        print char, freq
+    print char, freq
 
 
 # Excercise 12.4.1:  Write a program that reads a word list from a file
@@ -73,12 +73,12 @@ def anagram_dict() :
     anagrams = dict()
     fin = open('words.txt')  # assumes words.txt in current directory
     for line in fin :
-        word = line.strip()
-        sword = ''.join(sorted(word)) # creates a string of sorted chars
-        if sword not in anagrams :
-            anagrams[sword] = [word]
-        else :
-            anagrams[sword].append(word)
+    word = line.strip()
+    sword = ''.join(sorted(word)) # creates a string of sorted chars
+    if sword not in anagrams :
+    anagrams[sword] = [word]
+    else :
+    anagrams[sword].append(word)
     return anagrams
 
 # put anagrams into a dict
@@ -89,9 +89,9 @@ def most_ans() :
     n_anograms = 0
     ano_cnt = dict()
     for item in anagrams :
-        ano_cnt[item] = len(anagrams[item])
-        if ano_cnt[item] > n_anograms :
-            n_anograms = ano_cnt[item]
+    ano_cnt[item] = len(anagrams[item])
+    if ano_cnt[item] > n_anograms :
+    n_anograms = ano_cnt[item]
     print "Max # anograms: ", n_anograms
     return ano_cnt
 
@@ -99,8 +99,8 @@ ano_cnt = most_ans()
 
 def findmaxano() :
     for item in ano_cnt :
-        if ano_cnt[item] >= 11 :
-            print item, ano_cnt[item], anagrams[item]
+    if ano_cnt[item] >= 11 :
+    print item, ano_cnt[item], anagrams[item]
 
 # Max anagrams: two strings have 11 anagrams: aeprs and aelrst
 # All anagrams would result if printing all entries of annograms
@@ -120,13 +120,13 @@ def findmaxano() :
 def bingos() :
     max_bingo = 0
     for item in ano_cnt :
-        if len(item) == 8 :
-            if ano_cnt[item] > max_bingo :
-                max_bingo = ano_cnt[item]
+    if len(item) == 8 :
+    if ano_cnt[item] > max_bingo :
+    max_bingo = ano_cnt[item]
     for item in ano_cnt :
-        if len(item) == 8 :
-            if ano_cnt[item] == max_bingo :
-                print item, ano_cnt[item], anagrams[item]
+    if len(item) == 8 :
+    if ano_cnt[item] == max_bingo :
+    print item, ano_cnt[item], anagrams[item]
 
 
 # Exercise 12.5  Two words form a “metathesis pair” if you can transform
@@ -148,16 +148,16 @@ def bingos() :
 def ano_freq() :
     ano_freqs = dict()
     for item in ano_cnt :
-        if ano_cnt[item] not in ano_freqs :
-            ano_freqs[ano_cnt[item]] = 1
-        else :
-            ano_freqs[ano_cnt[item]] += 1
+    if ano_cnt[item] not in ano_freqs :
+    ano_freqs[ano_cnt[item]] = 1
+    else :
+    ano_freqs[ano_cnt[item]] += 1
     return ano_freqs
 
 def ano_freql() :
     ano_freql = list()
     for item in ano_freqs :
-        ano_freql.append([item,ano_freqs[item]])
+    ano_freql.append([item,ano_freqs[item]])
     return ano_freql
 
 # To list the frequence from highest to lowest:
@@ -167,8 +167,8 @@ import math
 def ano_combo() :
     ano_combo = dict()
     for cnt in ano_freqs :
-        if cnt > 1 :
-            ano_combo[cnt] = math.factorial(cnt)/(2*math.factorial(cnt-2))
+    if cnt > 1 :
+    ano_combo[cnt] = math.factorial(cnt)/(2*math.factorial(cnt-2))
     return ano_combo
 
 ano_combo = ano_combo()
@@ -182,7 +182,7 @@ for cnt in ano_combo :
 def totcomps() :
     tots = 0
     for idx in ano_combo :
-        tots = tots + ano_freqs[idx] * ano_combo[idx]
+    tots = tots + ano_freqs[idx] * ano_combo[idx]
     print tots
 
 # have to check 19,194 pairs that could be metathesis pairings
@@ -197,20 +197,62 @@ from itertools import combinations
 def letcomp(word1,word2) :
     diffex = 0
     for i in range(len(word1)) :
-        if word1[i] != word2[i] :
-            diffex += 1
+    if word1[i] != word2[i] :
+    diffex += 1
     return diffex
 
 def metathesis() :
     meta = list()
     for item in ano_cnt :
-        if ano_cnt[item] > 1 :
-            combos = combinations(anagrams[item],2)
-            for tup in combos :
-                diffex = letcomp(tup[0],tup[1])
-                if diffex == 2 :
-                    meta.append(tup)
+    if ano_cnt[item] > 1 :
+    combos = combinations(anagrams[item],2)
+    for tup in combos :
+    diffex = letcomp(tup[0],tup[1])
+    if diffex == 2 :
+    meta.append(tup)
     return meta
 
 # Holy Shizzle - it worked!!!
 # Yields 3311 pairs of metathesis pairs from Words.txt
+
+# Exercise 12.6: Word reduction by removing letters.  Seems tedious ... skipping for now.
+
+"""
+A couple other interesting tasks:
+1. List the frequency of letters found in Word.txt.  (Function let_freq above
+    does so for a string and freqs_ano
+"""
+# Create a dict with words of Words.txt and a blank for value
+def makedict() :
+    fin = open('turtle/words.txt')
+    wlist_dict = dict()
+    for line in fin :
+        word = line.strip()
+        wlist_dict[word] = ''
+        print len(wlist_dict)
+        return wlist_dict
+
+wlist_dict = makedict()
+
+# Histogram of letter frequency in Words.txt (via wlist_dict)
+def letter_freq(in_dict) :
+    freqs_dict = dict()
+    for word in in_dict :
+        for char in word :
+            if char not in freqs_dict :
+                freqs_dict[char] = 1
+            else :
+                freqs_dict[char] += 1
+    return freqs_dict
+
+freqs_dict = letter_freq(wlist_dict)
+
+# histolet() reverses the freqs_dict and sorts decending to print
+def histolet() :
+    histodict = dict()
+    for item in freqs_dict :
+        histodict[freqs_dict[item]] = item
+    for cnt in sorted(histodict,reverse=True) :
+        print cnt, histodict[cnt]
+
+ 
