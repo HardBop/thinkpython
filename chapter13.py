@@ -97,6 +97,8 @@ def book_words(book,first,last) :
     print book," has ",len(words_dict)," distinct words"
     return words_dict
 
+Douglass_words = book_words('Frederick_Douglass.txt',540,3733)
+
 # Can now reverse dict and sort - output is count, list of words or word, count
 #   in descending order?  Douglass book has 4777 words ...
 
@@ -117,10 +119,14 @@ def getmax(indict) :
 
 Douglass_revdict = getmax(Douglass_words)
 
-def hi_lo(revdict) :
+def hi_lo(revdict,heads,tails) :
     flist = []
     for cnt in revdict :
         flist.append((cnt,revdict[cnt]))
     sflist = sorted(flist, reverse=True)
-    print sflist[:5]
-    print sflist[-5:]
+    print sflist[:heads]
+    print sflist[-tails:]
+
+""" Exercise 13.3: Modify the program from the previous exercise to print
+    the 20 most frequently-used words in the book.
+"""
