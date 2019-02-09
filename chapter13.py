@@ -143,3 +143,30 @@ hi_lo(Douglass_revdict,20,0)
     (see Section 9.1) and then print all the words in the book that are
     not in the word list.
 """
+# Read words.txt into a dict
+def read_words() :
+    fin = open('/Users/jimbaer/python/sandbox/text_files/words.txt')
+    wordlist = dict()
+    for line in fin :
+        word = line.strip()
+        if word not in wordlist :
+            wordlist[word] = ''
+        else :
+            print "error - word repeated in source file"
+            return
+    return wordlist
+
+wl_dict = read_words()
+
+# write function to read words from book (Douglass_words dict) and see if they
+#   are in wl_dict, putting any not in wl_dict into a missing_dict
+def wordmatch(book_words) :
+    missing_dict = dict()
+    for word in book_words :
+        if word not in wl_dict :
+            missing_dict[word] = ''
+    print len(missing_dict)
+    return missing_dict
+
+# Answer is: mostly mismatch due to contractions, proper names, numbers, and
+#   ______ which are not in words.txt file
