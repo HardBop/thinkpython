@@ -88,7 +88,7 @@ def book_words(book,first,last) :
     for line in fin :
         lc += 1
         if (lc >= first and lc < last) :
-            for word in line.split() :
+            for word in line.replace('-',' ').split() :  # see note
                 cleanword = squishy(word)
                 if cleanword in words_dict :
                     words_dict[cleanword] += 1
@@ -96,6 +96,8 @@ def book_words(book,first,last) :
                     words_dict[cleanword] = 1
     print book," has ",len(words_dict)," distinct words"
     return words_dict
+
+# Note: replace().split() allows to split on "-" or " "
 
 Douglass_words = book_words('Frederick_Douglass.txt',540,3733)
 
@@ -124,9 +126,20 @@ def hi_lo(revdict,heads,tails) :
     for cnt in revdict :
         flist.append((cnt,revdict[cnt]))
     sflist = sorted(flist, reverse=True)
-    print sflist[:heads]
-    print sflist[-tails:]
+    if heads > 0 :
+        print 'Most Frequent Words: (count,word)'
+        for item in sflist[:heads] :
+            print item
+    if tails > 0 :
+        print sflist[-tails:]
 
 """ Exercise 13.3: Modify the program from the previous exercise to print
     the 20 most frequently-used words in the book.
+"""
+# Already built the basic function in hi_lo() above
+hi_lo(Douglass_revdict,20,0)
+
+""" Exercise 13.4: Modify the previous program to read a word list
+    (see Section 9.1) and then print all the words in the book that are
+    not in the word list.
 """
