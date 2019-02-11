@@ -168,5 +168,20 @@ def wordmatch(book_words) :
     print len(missing_dict)
     return missing_dict
 
+Douglass_miss_dict = wordmatch(Douglass_words)
+
+def  dump_mismatch(miss_dict,N) :
+    i = 0
+    for word in miss_dict :
+        if i < N :
+            i += 1
+            print i, word
+        else :
+            return
+
+
 # Answer is: mostly mismatch due to contractions, proper names, numbers, and
 #   ______ which are not in words.txt file
+
+# Did another example with Tale of Two Cities - longer with more geniune
+#   mismatches
