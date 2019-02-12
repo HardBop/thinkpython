@@ -236,6 +236,8 @@ def chooser(distn) :
 # chooser() solves problem 13.5 but went further to develop another
 #   function gensample() that generates samples according to the
 #   distribuiton in the observed histogram, for validation
+# histogram(), getbase(), bootstrap(), and chooser() combine to make the
+#   choose_from_hist() function requested
 
 def gensample(distn,size) :
     newsample = []
