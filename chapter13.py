@@ -185,3 +185,60 @@ def  dump_mismatch(miss_dict,N) :
 
 # Did another example with Tale of Two Cities - longer with more geniune
 #   mismatches
+"""  Exercise 13.5
+    Write a function named choose_from_hist that takes a histogram as defined
+    in Section 11.1 and returns a random value from the histogram, chosen with
+    probability in proportion to frequency.
+"""
+# Function to return an item for sample list with probability of any item
+#   corresponding to the observed frequency in the sample.
+
+# helper fn for bootstrap() that creates histogram from an observed sample,
+#   where sample is a list of discrete observations over a finite set of
+#   objects.  (E.g, heads/tails, sides of a die, etc.)
+def histogram(sample) :
+    freq_dict = dict()
+    for item in sample :
+        if item in freq_dict :
+            freq_dict[item] += 1
+        else :
+            freq_dict[item] = 1
+    return freq_dict
+
+# helper function for bootstrap() to get denomenator
+def get_base(histin) :
+    denom = 0
+    for item in histin :
+        denom += histin[item]
+    return denom
+
+# function to calculated observed frequency of items in a sample
+def bootstrap(sample) :
+    histin = histogram(sample)
+    denom = get_base(histin)
+    distn = dict()
+    for item in histin :
+        distn[item] = histin[item] / float(denom)
+        print item, distn[item]
+    return distn
+
+# Now need to create the final funcion that makes a random draw with the
+#   probability of an outcome corresponding to the observed frequencies'
+#   in the distn dict.
+def chooser(distn) :
+    cumit = 0
+    draw = random.random()
+    for item in distn :
+        cumit += distn[item]
+        if draw <= cumit :
+            return item
+
+# chooser() solves problem 13.5 but went further to develop another
+#   function gensample() that generates samples according to the
+#   distribuiton in the observed histogram, for validation
+
+def gensample(distn,size) :
+    newsample = []
+    for i in range(size) :
+        newsample.append(chooser(distn))
+    return newsample
