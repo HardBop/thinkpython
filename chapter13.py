@@ -292,6 +292,29 @@ def set_up(dict1,dict2,show=10) :
             print i, word
     return diff_set
 
+"""  Exercise 13.7
+Alternate approach to a random draw:
+1. get cummulative count of words for _words dict
+2. Use random package to get a random number and scale to the word count
+3. Pick first word from the cummulative distn that passes scaled psuedo-random,
+    which will require ordering the (key,value) pairs by value - reverse dict
+This approach relies on the ordering of the dict being arbitrary - suspect
+    that will further compromise the "ramdom"-ness
+"""
+
+def cumm_dict(indict) :
+    cumm_dict = dict()
+    summer = 0
+    for word in indict:
+        summer += indict[word]
+        cumm_dict[word] = summer
+    print 'total words: ',max(cumm_dict.values()),'  distinct words:', len(cumm_dict)
+    return cumm_dict
+
+Douglass_cumm = cumm_dict(Douglass_words2)
+
+# Now invert the cumm dict and order (via list?) then can walk the ordered
+#    list to find the first entry above critical value.
 
 """  Author's code from the book
 
@@ -318,10 +341,8 @@ def process_file(filename, skip_header):
     """
     hist = {}
     fp = file(filename)
-
     if skip_header:
         skip_gutenberg_header(fp)
-
     for line in fp:
         process_line(line, hist)
     return hist
@@ -347,12 +368,10 @@ def process_line(line, hist):
     """
     # replace hyphens with spaces before splitting
     line = line.replace('-', ' ')
-
     for word in line.split():
         # remove punctuation and convert to lowercase
         word = word.strip(string.punctuation + string.whitespace)
         word = word.lower()
-
         # update the histogram
         hist[word] = hist.get(word, 0) + 1
 
