@@ -43,9 +43,9 @@ for line in fin :
 
 #Function version - squishy removes punctuation, whitespace, and makes
 #   lower case
-# Note author's method below [process_line()] using string.strip() leaves
-#   apostrophes for contractions and some other embedded marks - gives better
-#   results.
+# Note author's method below [process_line()] using string.strip() is a
+#   better solution because it only strips leading & trailing characters
+#   but does not remove embedded like apostrophes.
 def squishy(word) :
     word = word.lower()
     newword = ''
@@ -53,6 +53,11 @@ def squishy(word) :
         if char not in (string.punctuation+string.whitespace) :
             newword += char
     return newword
+
+def better_squishy(word) :
+    word = word.lower().strip(string.punctuation+string.whitespace)
+    return word
+
 
 
 # For fun, re-working with the translate() method
