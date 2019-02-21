@@ -302,6 +302,8 @@ This approach relies on the ordering of the dict being arbitrary - suspect
     that will further compromise the "ramdom"-ness
 """
 
+# Takes dict with words as keys and frequencies as values and returns
+#   dict with words as keys and cummulative word count as values
 def cumm_dict(indict) :
     cumm_dict = dict()
     summer = 0
@@ -311,10 +313,124 @@ def cumm_dict(indict) :
     print 'total words: ',max(cumm_dict.values()),'  distinct words:', len(cumm_dict)
     return cumm_dict
 
-Douglass_cumm = cumm_dict(Douglass_words2)
 
-# Now invert the cumm dict and order (via list?) then can walk the ordered
-#    list to find the first entry above critical value.
+# Takes dict with words as keys and cummulative word count as values and
+#   inverts to a dict with cummulative count as keys and words as values.
+# Not general for dict inversion b/c it errors our rather than concatenation
+#   a list in case where initial value would map to more than one key.
+def invert_dict(indict) :
+    inverted = dict()
+    for key in indict :
+        if indict[key] in inverted :
+            print "Error: key already exists"
+            return
+        else :
+            inverted[indict[key]] = key
+    print len(inverted), " entries in new dict"
+    return inverted
+
+
+# Takes inverted cummulative word count dict and draws a (psuedo) random
+#   word where the likelihood of draw is based on observed frequencies
+def draw_word(indict) :
+    cval = max(indict.keys()) * random.random()
+    keylist = sorted(indict.keys())
+    for item in keylist :
+        if item >= cval :
+            return indict[item]
+
+
+if __name__ == '__main__' :
+    Douglass_cumm = cumm_dict(Douglass_words2)
+    Douglass_cumm_inv = invert_dict(Douglass_cumm)
+    print draw_word(Douglass_cumm_inv)
+
+"""  Exercise 13.8 Markhov analysis
+
+1. Write a program to read a text from a file and perform Markov analysis.
+    The result should be a dictionary that maps from prefixes to a collection
+    of possible suffixes. The collection might be a list, tuple, or dictionary;
+    it is up to you to make an appropriate choice. You can test your program
+    with prefix length two, but you should write the program in a way that
+    makes it easy to try other lengths
+
+"""
+# How to split text into prefixes and suffixes?  I.e., how many words in each?
+#   First cut: set prefix length to 2 and suffix to 1
+#   Need to read words in a sliding window of 2-word bundles to get prefixes
+#   Could read words into a dict that takes word and then order, then
+#       step through in order and create dict of 2-word tuples.  Have to
+#       make the order the key and word the value b/c word not distinct
+
+# read book into a dict with the order of the word as key and the word as
+#   value.  Have to use order as key b/c the word itself won't be distinct.
+def ordered_words(book,first=0,last=1000000) :
+    fin = open('/Users/jimbaer/python/sandbox/text_files/'+book)
+    lc = 0
+    wc = 0
+    ord_words = dict()
+    for line in fin :
+        lc += 1
+        if (lc >= first and lc < last) :
+            for word in line.replace('-',' ').split() :  # see note
+                wc += 1
+                cleanword = squishy(word)
+                ord_words[wc] = cleanword
+    return ord_words
+
+halfb_owords = ordered_words('eric_the_half.txt')
+
+# Create dict of ordered 2-word tuples as prefixes
+def prefix_dict(indict) :
+    pref_dict = dict()
+    for item in indict :
+        if item < len(indict) :
+            pref_dict[item] = (indict[item],indict[item+1])
+    print len(pref_dict), " prefixes in dict"
+    return pref_dict
+
+# Reverse the prefix dict to make searchable by tuples with frequency of
+#   the prefix tuple appearing as values
+def prefix_rev(prefix_dict) :
+    prerev = dict()
+    for item in prefix_dict :
+        if prefix_dict[item] not in prerev :
+            prerev[prefix_dict[item]] = 1
+        else :
+            prerev[prefix_dict[item]] += 1
+    return prerev
+
+halfb_prefreq = prefix_rev(halfb_prefix)
+
+# dict with prefix tuple as key and suffix (list of stings) as value
+# pre2suf() takes ordered prefix dict and appends suffix in values
+#   e.g., halfb_prefix dict as input
+def pre2suf(prefix) :
+    pre2suf = dict()
+    for item in prefix :
+        if item < len(prefix) :
+            suffix = prefix[item+1][1]
+        else :
+            suffix = ''
+        if prefix[item] not in pre2suf :
+            pre2suf[prefix[item]] = [suffix]
+        else :
+            pre2suf[prefix[item]].append(suffix)
+    return pre2suf
+
+halfb_pre2suf = pre2suf(halfb_prefix)
+
+# Utility function to dump dict, default is top 10 lines
+def dict_dump(indict, lines=10) :
+    cnt = 0
+    for item in indict :
+        cnt += 1
+        if cnt <= lines :
+            print cnt, item, indict[item]
+        else :
+            return
+
+
 
 """  Author's code from the book
 
