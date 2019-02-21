@@ -430,10 +430,12 @@ def dict_dump(indict, lines=10) :
         else :
             return
 
-# A simple Markhov test stream - random choice of prefix - now need to add
-#   random choice of suffix if len(suffix) > 1
-
-def Markhov1(indict) :
+# A simple Markhov test stream - uses 2-word prefix and single word suffix
+#   with random choice of prefix, and suffix also if len(suffix) > 1.
+# indict = dict with prefix keys and suffix values
+# Arbitrarily kicks out after default 10 iterations through the dict, though
+#   that parameter is adjustable
+def Markhov1(indict,lins=10) :
     newstring = ''
     cnt = 0
     for item in indict :
@@ -444,7 +446,7 @@ def Markhov1(indict) :
             suffix = random.choice(indict[ranpre])
         newstring = newstring + ' ' + ranpre[0] + ' ' + ranpre[1] + ' ' + suffix
         cnt += 1
-        if cnt >= 10 :
+        if cnt >= lins :
             print newstring
             return
     return
