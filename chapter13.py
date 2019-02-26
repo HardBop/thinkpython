@@ -479,3 +479,18 @@ def freq_rank(revdict) :
 # need to expand out the words & freqs that are grouped together in revdict
 # Chart I get is more concave than linear for both eric_the_half and emma
 #   though away from the endpoints the linear approx should be good
+# Below version writes to a csv
+def freq_rank(revdict,csvname) :
+    flist = []
+    for cnt in revdict :
+        flist.append((cnt,revdict[cnt]))
+    sflist = sorted(flist, reverse=True)
+    # freq_rank = dict()
+    rank = 0
+    fout = open('/Users/jimbaer/python/sandbox/text_files/'+csvname,'w')
+    for item in sflist :
+        rank += 1
+        comma = ' , '
+        wstring = str(rank) + comma + str(item[0]) + comma + str(math.log(rank)) + comma + str(math.log(item[0]))+'\n'
+        fout.write(wstring)
+    fout.close()
