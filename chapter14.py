@@ -28,3 +28,26 @@ sed('Carpenter','Glaser','walrus.txt','glaser.txt')
 
 # Note: would be good to include informative error message,
 #   passing any error received in execution
+
+""" Exercise 14.3 : store list of strings in db (don't need to pickle)
+"""
+
+def picklit(indict) :
+    """ Takes a dict and creates a new dict with pickled values """
+    pick_dict = dict()
+    for item in indict :
+        if item not in pick_dict :
+            pick_dict[str(item)] = pickle.dumps(indict[item])
+        else :
+            print "Error - repeated key"
+    return pick_dict
+
+halfb_pickle = picklit(halfb_revdict)
+
+def store_dict_db(db_name,dict_name) :
+    shelf = shelve.open('/Users/jimbaer/python/sandbox/databases/'+db_name,'c')
+
+    for cnt, wordlist in dict_name.iteritems() :
+        shelf[cnt] = wordlist
+
+    shelf.close()
